@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Storage;
 
 class DownloadOuiFileFromIeeeWebPage extends Command
 {
-
     /**
      * The name and signature of the console command.
      *
@@ -37,15 +36,15 @@ class DownloadOuiFileFromIeeeWebPage extends Command
     public function __construct()
     {
         parent::__construct();
-
     }
 
     /**
      * Execute the console command.
      *
-     * @return int
      * @throws OuiFileNotFoundException
      * @throws Exception
+     *
+     * @return int
      */
     public function handle()
     {
@@ -54,7 +53,7 @@ class DownloadOuiFileFromIeeeWebPage extends Command
         self::createDirectory();
 
         if ($choice === 'All') {
-            foreach(OuiFile::NAMES as $file) {
+            foreach (OuiFile::NAMES as $file) {
                 self::downloadRecipe($file, $this->option('manual'));
             }
         } else {
@@ -65,12 +64,11 @@ class DownloadOuiFileFromIeeeWebPage extends Command
     }
 
     /**
-     * Create initial directory if needed
+     * Create initial directory if needed.
      */
     private function createDirectory(): void
     {
         if (!Storage::exists('ieee')) {
-
             $this->info(' Creating initial directory.');
 
             Storage::makeDirectory('ieee');
@@ -78,7 +76,7 @@ class DownloadOuiFileFromIeeeWebPage extends Command
     }
 
     /**
-     * Displays a menu to select the file to download
+     * Displays a menu to select the file to download.
      *
      * @return string
      */
@@ -88,7 +86,7 @@ class DownloadOuiFileFromIeeeWebPage extends Command
     }
 
     /**
-     * Displays the menu to select a file to download
+     * Displays the menu to select a file to download.
      *
      * @return string
      */
@@ -102,7 +100,7 @@ class DownloadOuiFileFromIeeeWebPage extends Command
     }
 
     /**
-     * Draws the title of the command
+     * Draws the title of the command.
      */
     private function drawTitle()
     {
@@ -112,10 +110,11 @@ class DownloadOuiFileFromIeeeWebPage extends Command
     }
 
     /**
-     * Recipe to download a file
+     * Recipe to download a file.
      *
      * @param string $file
-     * @param bool $isManualAssigment
+     * @param bool   $isManualAssigment
+     *
      * @throws OuiFileNotFoundException
      */
     private function downloadRecipe(string $file, bool $isManualAssigment)
@@ -127,13 +126,12 @@ class DownloadOuiFileFromIeeeWebPage extends Command
         self::storeFileDetails();
 
         if ($this->confirm('Do you wish to insert records in the database')) {
-
             $this->call('mac:insert', ['file' => $this->file->name()]);
         }
     }
 
     /**
-     * Downloads the file and stores in storage
+     * Downloads the file and stores in storage.
      */
     private function fileDownload(): void
     {
@@ -142,25 +140,25 @@ class DownloadOuiFileFromIeeeWebPage extends Command
         Storage::put($this->file->path(), fopen($this->file->url(), 'r'));
     }
 
-
     /**
-     * Return an array with the details of the file downloaded
+     * Return an array with the details of the file downloaded.
      *
      * @return array
      */
     private function newDownloadRecord(): array
     {
         return [
-            'name' => $this->file->name(),
-            'size' => $this->file->size(),
-            'hash' => $this->file->hash(),
-            'registry' => $this->file->registry(),
+            'name'       => $this->file->name(),
+            'size'       => $this->file->size(),
+            'hash'       => $this->file->hash(),
+            'registry'   => $this->file->registry(),
             'created_at' => Carbon::now()->toDateTimeString(),
         ];
     }
 
     /**
-     * Store file details in the database
+     * Store file details in the database.
+     *
      * @throws OuiFileNotFoundException
      */
     private function storeFileDetails(): void
@@ -174,7 +172,6 @@ class DownloadOuiFileFromIeeeWebPage extends Command
             ->get();
 
         if ($record->count() == 0) {
-
             $this->info(' File downloaded and stored as '.$this->file->name());
 
             DB::table('ieee_oui_files')->insert(self::newDownloadRecord());

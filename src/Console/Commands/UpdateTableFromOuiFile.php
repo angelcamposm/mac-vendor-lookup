@@ -4,7 +4,6 @@ namespace Acamposm\MacVendorLookup\Console\Commands;
 
 use Acamposm\MacVendorLookup\OuiFile;
 use Acamposm\MacVendorLookup\OuiFileProcessor;
-use Acamposm\MacVendorLookup\Models\OuiAssignment;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -40,8 +39,9 @@ class UpdateTableFromOuiFile extends Command
     /**
      * Execute the console command.
      *
-     * @return int
      * @throws \Exception
+     *
+     * @return int
      */
     public function handle()
     {
@@ -73,17 +73,16 @@ class UpdateTableFromOuiFile extends Command
             //unset($previous_oids);
 
             dd([
-                'total' => $current_csv->count(),
+                'total'   => $current_csv->count(),
                 'cleaned' => $current_csv->whereNotIn('oui', $additions)->count(),
             ]);
 
             $updates =
 
-
             $stats = [
                 'additions' => count($additions),
                 'deletions' => count($deletions),
-                'updates' => 0,
+                'updates'   => 0,
             ];
 
             dd($stats);
@@ -93,9 +92,10 @@ class UpdateTableFromOuiFile extends Command
     }
 
     /**
-     * Loads the specified file and returns a collection
+     * Loads the specified file and returns a collection.
      *
      * @param string $path
+     *
      * @return Collection
      */
     private function loadFile(string $path): Collection
@@ -108,7 +108,7 @@ class UpdateTableFromOuiFile extends Command
     }
 
     /**
-     * Check for new additions to the OUI database
+     * Check for new additions to the OUI database.
      *
      * @param array $current
      * @param array $previous
@@ -122,8 +122,7 @@ class UpdateTableFromOuiFile extends Command
 
         $this->output->progressStart(count($current));
 
-        foreach($current as $oui) {
-
+        foreach ($current as $oui) {
             if (!in_array($oui, $previous)) {
                 array_push($additions, $oui);
             }
@@ -140,10 +139,11 @@ class UpdateTableFromOuiFile extends Command
     }
 
     /**
-     * Check for deletions in the OUI database
+     * Check for deletions in the OUI database.
      *
      * @param array $current
      * @param array $previous
+     *
      * @return array
      */
     private function checkDeletions(array $current, array $previous): array
@@ -156,7 +156,6 @@ class UpdateTableFromOuiFile extends Command
         $this->output->progressStart(count($previous));
 
         foreach ($previous as $oui) {
-
             if (!in_array($oui, $current)) {
                 array_push($oui, $deletions);
             }
@@ -174,12 +173,11 @@ class UpdateTableFromOuiFile extends Command
 
     private function checkUpdates(array $current, array $previous)
     {
-
     }
 
     /**
      * Query the database for the last file with a different hash than the
-     * current one
+     * current one.
      */
     private function selectPreviousFileDetails()
     {

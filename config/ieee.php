@@ -39,5 +39,5 @@ return [
              */
             'cid' => 'http://standards-oui.ieee.org/cid/cid.csv',
         ],
-    ]
+    ],
 ];
