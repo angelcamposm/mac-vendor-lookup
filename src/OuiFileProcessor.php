@@ -35,7 +35,7 @@ class OuiFileProcessor
     }
 
     /**
-     * Process the array, removes headers and add custom ones
+     * Process the array, removes headers and add custom ones.
      *
      * @param array $csv
      * @return array

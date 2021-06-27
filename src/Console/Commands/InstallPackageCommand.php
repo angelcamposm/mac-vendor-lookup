@@ -18,7 +18,7 @@ class InstallPackageCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Install MAC Vendor Lookup package.';
 
     /**
      * Create a new command instance.
@@ -37,6 +37,28 @@ class InstallPackageCommand extends Command
      */
     public function handle()
     {
+        if (file_exists(config_path('ieee.php'))) {
+            $this->hidden = true;
+        }
+
+        $this->info('Installing MAC Vendor Lookup Package...');
+
+        $this->info('Publishing configuration...');
+
+        $this->call('vendor:publish', [
+            '--provider' => 'Acamposm\MacVendorLookup\Providers\MacVendorLookupServiceProvider',
+            '--tag'      => 'config',
+        ]);
+
+        $this->info('Publishing migrations...');
+
+        $this->call('vendor:publish', [
+            '--provider' => 'Acamposm\MacVendorLookup\Providers\MacVendorLookupServiceProvider',
+            '--tag'      => 'migrations',
+        ]);
+
+        $this->info('Installed PingPackage');
+
         return 0;
     }
 }
