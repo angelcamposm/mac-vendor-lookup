@@ -1,0 +1,51 @@
+{
+    "name": "acamposm/mac-vendor-lookup",
+    "description": "MAC vendor lookup is a package.",
+    "type": "library",
+    "homepage": "https://github.com/angelcamposm/mac-vendor-lookup",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Angel Campos Muñoz",
+            "email": "angel.campos.m@outlook.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "illuminate/console": "^v8",
+        "illuminate/database": "^8.48",
+        "illuminate/filesystem": "^8.48",
+        "pestphp/pest": "^1.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Acamposm\\MacVendorLookup\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Acamposm\\MacVendorLookup\\Tests\\": "tests"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Acamposm\\MacVendorLookup\\MacVendorLookupServiceProvider"
+            ],
+            "aliases": {
+                "MacVendorLookup": "Acamposm\\MacVendorLookup\\Facades\\MacVendorLookupFacade"
+            }
+        }
+    },
+    "minimum-stability": "stable",
+    "scripts": {
+        "pest": "./vendor/bin/pest --coverage",
+        "test": "phpunit --colors=always --testdox",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    }
+}
