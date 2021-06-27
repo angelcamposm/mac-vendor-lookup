@@ -18,7 +18,7 @@ class CreateIeeeOuiAssignmentsTable extends Migration
             $table->string('oui', 9);
             $table->string('organization', 100);
             $table->string('address', 250);
-            $table->string('registry',10);
+            $table->string('registry', 10);
             $table->timestamps();
         });
     }

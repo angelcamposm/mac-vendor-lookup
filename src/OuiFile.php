@@ -10,15 +10,15 @@ use Illuminate\Support\Facades\Storage;
 
 class OuiFile
 {
-    const FOLDER = 'ieee';
+    public const FOLDER = 'ieee';
 
-    const CID = 'IEEE CID Assignments';
-    const IAB = 'IEEE IAB Assignments';
-    const MAL = 'IEEE MA-L Assignments';
-    const MAM = 'IEEE MA-M Assignments';
-    const MAS = 'IEEE MA-S Assignments';
+    public const CID = 'IEEE CID Assignments';
+    public const IAB = 'IEEE IAB Assignments';
+    public const MAL = 'IEEE MA-L Assignments';
+    public const MAM = 'IEEE MA-M Assignments';
+    public const MAS = 'IEEE MA-S Assignments';
 
-    const NAMES = [
+    public const NAMES = [
         OuiFile::CID,
         OuiFile::IAB,
         OuiFile::MAL,
@@ -34,7 +34,7 @@ class OuiFile
      * OuiFile constructor.
      *
      * @param ?string $name
-     * @param bool $isManualAssignment
+     * @param bool    $isManualAssignment
      *
      * @throws Exception
      */
@@ -74,8 +74,9 @@ class OuiFile
     /**
      * Check if file exists.
      *
-     * @return bool
      * @throws OuiFileNotFoundException
+     *
+     * @return bool
      */
     public function exists(): bool
     {
@@ -87,19 +88,20 @@ class OuiFile
     }
 
     /**
-     * Return the hash of the file
+     * Return the hash of the file.
      *
      * @return string
      */
     public function hash(): string
     {
-        return (new Filesystem)->hash(storage_path(self::fullPath()));
+        return (new Filesystem())->hash(storage_path(self::fullPath()));
     }
 
     /**
-     * Creates the final file name
+     * Creates the final file name.
      *
      * @param string $name
+     *
      * @return string
      */
     public function getFileName(string $name): string
@@ -168,9 +170,10 @@ class OuiFile
     }
 
     /**
-     * Returns the Registry Type from the given file name
+     * Returns the Registry Type from the given file name.
      *
      * @param string $name
+     *
      * @return string
      */
     private function getRegistryFromFileName(string $name): string

@@ -4,14 +4,14 @@ namespace Acamposm\MacVendorLookup;
 
 class MacAddress
 {
-    const DASH = '-';
-    const DOT = '.';
-    const SEMICOLON = ':';
+    public const DASH = '-';
+    public const DOT = '.';
+    public const SEMICOLON = ':';
 
     /**
-     * Array of Common separators on MAC Addresses
+     * Array of Common separators on MAC Addresses.
      */
-    const SEPARATORS = [
+    public const SEPARATORS = [
         MacAddress::DASH,
         MacAddress::DOT,
         MacAddress::SEMICOLON,
@@ -31,7 +31,7 @@ class MacAddress
 
     /**
      * Returns the value of Byte that defines the administration type of the
-     * MAC Address
+     * MAC Address.
      *
      * @return int
      */
@@ -45,7 +45,7 @@ class MacAddress
     }
 
     /**
-     * Return the type of administration for this MAC Address
+     * Return the type of administration for this MAC Address.
      *
      * @return string
      */
@@ -55,7 +55,7 @@ class MacAddress
     }
 
     /**
-     * Returns the description of the typo of administration of this MAC Address
+     * Returns the description of the typo of administration of this MAC Address.
      *
      * @return string
      */
@@ -67,7 +67,7 @@ class MacAddress
     }
 
     /**
-     * Check if the OUI is known as a Virtual Machine Mac Address Ranges from Hypervisors
+     * Check if the OUI is known as a Virtual Machine Mac Address Ranges from Hypervisors.
      *
      * @return bool
      */
@@ -77,7 +77,7 @@ class MacAddress
     }
 
     /**
-     * Return the transmission type of the MAC Address
+     * Return the transmission type of the MAC Address.
      *
      * @return string
      */
@@ -95,7 +95,7 @@ class MacAddress
     }
 
     /**
-     * Removes from MAC Address the most common separators ('-', '.', ':')
+     * Removes from MAC Address the most common separators ('-', '.', ':').
      *
      * @return string
      */
@@ -105,17 +105,18 @@ class MacAddress
     }
 
     /**
-     * Generates a FAKE MAC Address
+     * Generates a FAKE MAC Address.
      *
      * @param string $format
-     * @param int $each
+     * @param int    $each
+     *
      * @return string
      */
     public static function Fake(string $format = self::SEMICOLON, int $each = 2): string
     {
         $mac = '';
 
-        for($i = 1; $i <= 12; $i++) {
+        for ($i = 1; $i <= 12; $i++) {
             $mac .= strtoupper(dechex(rand(1, 15)));
         }
 
@@ -125,9 +126,10 @@ class MacAddress
     /**
      * Generates $total MAC Address records...
      *
-     * @param int $total
+     * @param int    $total
      * @param string $format
-     * @param int $each
+     * @param int    $each
+     *
      * @return array
      */
     public static function Generator(int $total, string $format = MacAddress::SEMICOLON, int $each = 2): array
@@ -142,7 +144,7 @@ class MacAddress
     }
 
     /**
-     * Returns the OUI of the MAC Address
+     * Returns the OUI of the MAC Address.
      *
      * @return string
      */
@@ -152,7 +154,7 @@ class MacAddress
     }
 
     /**
-     * Returns the value of the M bit
+     * Returns the value of the M bit.
      *
      * @return int
      */
@@ -164,7 +166,7 @@ class MacAddress
     }
 
     /**
-     * Returns the value of the X bit
+     * Returns the value of the X bit.
      *
      * @return int
      */
@@ -176,7 +178,7 @@ class MacAddress
     }
 
     /**
-     * Returns the type of Identifier of the OUI
+     * Returns the type of Identifier of the OUI.
      *
      * @return string
      */
@@ -186,9 +188,10 @@ class MacAddress
     }
 
     /**
-     * Returns a binary representation of a Hexadecimal Bit of a Mac Address
+     * Returns a binary representation of a Hexadecimal Bit of a Mac Address.
      *
      * @param string $hexBit
+     *
      * @return string
      */
     private function hex2BinaryRepresentation(string $hexBit): string
@@ -197,7 +200,7 @@ class MacAddress
     }
 
     /**
-     * Returns the information of the MAC Address as an array
+     * Returns the information of the MAC Address as an array.
      *
      * @return array
      */
@@ -207,7 +210,7 @@ class MacAddress
     }
 
     /**
-     * Returns the information of the MAC Address as a JSON string
+     * Returns the information of the MAC Address as a JSON string.
      *
      * @return string
      */
@@ -217,7 +220,7 @@ class MacAddress
     }
 
     /**
-     * Returns the information of the MAC Address as an Object
+     * Returns the information of the MAC Address as an Object.
      *
      * @return object
      */
@@ -227,7 +230,7 @@ class MacAddress
     }
 
     /**
-     * Verifies if the MAC Address is valid
+     * Verifies if the MAC Address is valid.
      *
      * @return bool
      */
@@ -237,7 +240,7 @@ class MacAddress
     }
 
     /**
-     * Return an array with the MAC Address information
+     * Return an array with the MAC Address information.
      *
      * @return array
      */
@@ -245,24 +248,24 @@ class MacAddress
     {
         return [
             'mac' => [
-                'oui' => self::getOui(),
+                'oui'     => self::getOui(),
                 'address' => self::toFormat(),
-                'binary' => self::toBinary(),
+                'binary'  => self::toBinary(),
             ],
-            'is_valid' => self::isValid(),
-            'is_virtual_machine' => self::checkIsVirtualMachine(),
+            'is_valid'            => self::isValid(),
+            'is_virtual_machine'  => self::checkIsVirtualMachine(),
             'administration_type' => [
-                'value' => self::getAdministrationByte(),
-                'type' => self::administrationType(),
+                'value'       => self::getAdministrationByte(),
+                'type'        => self::administrationType(),
                 'description' => self::administrationTypeDescription(),
             ],
-            'identifier_type' => self::getTypeOfIdentifier(),
+            'identifier_type'   => self::getTypeOfIdentifier(),
             'transmission_type' => self::checkTransmissionType(),
         ];
     }
 
     /**
-     * Return an array with the known OUI from principal Hypervisors in the market
+     * Return an array with the known OUI from principal Hypervisors in the market.
      *
      * @return array
      */
@@ -287,7 +290,7 @@ class MacAddress
     }
 
     /**
-     * Returns a Binary representation of the MAC Address
+     * Returns a Binary representation of the MAC Address.
      *
      * @return string
      */
@@ -308,17 +311,18 @@ class MacAddress
     }
 
     /**
-     * Returns a MAC Address formatted as $format input
+     * Returns a MAC Address formatted as $format input.
      *
      * @param string $format
-     * @param int $each
+     * @param int    $each
+     *
      * @return string
      */
     public function toFormat(string $format = self::SEMICOLON, int $each = 2): string
     {
         $mac = '';
 
-        foreach(str_split(self::cleanedMacAddress(), $each) as $octet) {
+        foreach (str_split(self::cleanedMacAddress(), $each) as $octet) {
             if (strlen($mac) === 0) {
                 $mac .= $octet;
             } else {
@@ -330,9 +334,10 @@ class MacAddress
     }
 
     /**
-     * Validates a MAC Address
+     * Validates a MAC Address.
      *
      * @param string $mac
+     *
      * @return bool
      */
     public static function Validate(string $mac): bool

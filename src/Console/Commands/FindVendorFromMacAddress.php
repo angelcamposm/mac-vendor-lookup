@@ -37,8 +37,9 @@ class FindVendorFromMacAddress extends Command
     /**
      * Execute the console command.
      *
-     * @return int
      * @throws Exception
+     *
+     * @return int
      */
     public function handle()
     {
@@ -58,27 +59,29 @@ class FindVendorFromMacAddress extends Command
                 $this->argument('mac'),
                 Str::title($vendor[0]['organization']),
                 $vendor[0]['registry'],
-            ]
+            ],
         ]);
 
         return 0;
     }
 
     /**
-     * Returns the OIU for this MAC Address
+     * Returns the OIU for this MAC Address.
      *
      * @param string $mac_address
+     *
      * @return string
      */
     private function getOUI(string $mac_address): string
     {
-        return substr(str_replace(['.',':','-'], '', $mac_address), 0, 6);
+        return substr(str_replace(['.', ':', '-'], '', $mac_address), 0, 6);
     }
 
     /**
-     * Returns the Vendor associated with this OUI
+     * Returns the Vendor associated with this OUI.
      *
      * @param string $oui
+     *
      * @return array
      */
     private function getVendor(string $oui): array
