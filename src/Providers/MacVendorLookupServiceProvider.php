@@ -16,7 +16,6 @@ class MacVendorLookupServiceProvider extends ServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
-
             $this->publishConfig();
 
             $this->publishMigrations();
