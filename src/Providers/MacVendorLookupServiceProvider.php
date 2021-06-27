@@ -2,8 +2,10 @@
 
 namespace Acamposm\MacVendorLookup\Providers;
 
+use Acamposm\MacVendorLookup\Console\Commands\DownloadOuiFileFromIeeeWebPage;
+use Acamposm\MacVendorLookup\Console\Commands\GetMacAddressDetails;
 use Acamposm\MacVendorLookup\Console\Commands\InstallPackageCommand;
-use Acamposm\MacVendorLookup\OuiFileProcessor;
+use Acamposm\MacVendorLookup\Console\Commands\SeedTableFromOuiFile;
 use Illuminate\Support\ServiceProvider;
 
 class MacVendorLookupServiceProvider extends ServiceProvider
@@ -13,20 +15,13 @@ class MacVendorLookupServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /*
-         * Optional methods to load your package assets
-         */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'ping');
-
         if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/ieee.php' => config_path('ieee.php'),
-            ], 'config');
 
-            // Registering package commands.
-            $this->commands([
-                InstallPackageCommand::class,
-            ]);
+            $this->publishConfig();
+
+            $this->publishMigrations();
+
+            $this->registerCommands();
         }
     }
 
@@ -35,12 +30,67 @@ class MacVendorLookupServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/ieee.php', 'ieee');
+        $this->mergeConfig();
+    }
 
-        // Register the main class to use with the facade
-        $this->app->singleton('OuiFileProcessor', function () {
-            return new OuiFileProcessor();
-        });
+    /**
+     * Automatically apply the package configuration
+     */
+    private function mergeConfig()
+    {
+        $path = $this->getConfigPath();
+
+        $this->mergeConfigFrom($path, 'ieee');
+    }
+
+    /**
+     * Publish Config File.
+     */
+    private function publishConfig()
+    {
+        $path = $this->getConfigPath();
+
+        $this->publishes([
+            $path => config_path('ieee.php'),
+        ], 'config');
+    }
+
+    /**
+     * Publish Migrations.
+     */
+    private function publishMigrations()
+    {
+        $path = $this->getMigrationsPath();
+
+        $this->publishes([
+            $path => database_path('migrations'),
+        ], 'migrations');
+    }
+
+    /**
+     * Registering package commands.
+     */
+    private function registerCommands()
+    {
+        if (!file_exists(config_path('ieee.php'))) {
+            $this->commands([
+                InstallPackageCommand::class,
+            ]);
+        }
+        $this->commands([
+            DownloadOuiFileFromIeeeWebPage::class,
+            GetMacAddressDetails::class,
+            SeedTableFromOuiFile::class,
+        ]);
+    }
+
+    private function getConfigPath(): string
+    {
+        return __DIR__.'/../../config/ieee.php';
+    }
+
+    private function getMigrationsPath(): string
+    {
+        return __DIR__.'/../../database/migrations/';
     }
 }

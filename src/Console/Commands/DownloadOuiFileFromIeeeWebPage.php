@@ -125,9 +125,9 @@ class DownloadOuiFileFromIeeeWebPage extends Command
 
         self::storeFileDetails();
 
-        if ($this->confirm('Do you wish to insert records in the database')) {
-            $this->call('mac:insert', ['file' => $this->file->name()]);
-        }
+//        if ($this->confirm('Do you wish to insert records in the database')) {
+//            $this->call('mac:insert', ['file' => $this->file->name()]);
+//        }
     }
 
     /**

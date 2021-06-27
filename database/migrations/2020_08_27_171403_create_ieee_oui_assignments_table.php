@@ -16,7 +16,7 @@ class CreateIeeeOuiAssignmentsTable extends Migration
         Schema::create('ieee_oui_assignments', function (Blueprint $table) {
             $table->id();
             $table->string('oui', 9);
-            $table->string('organization', 100);
+            $table->string('organization', 150);
             $table->string('address', 250);
             $table->string('registry', 10);
             $table->timestamps();

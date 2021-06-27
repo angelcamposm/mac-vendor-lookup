@@ -35,7 +35,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Acamposm\\MacVendorLookup\\MacVendorLookupServiceProvider"
+                "Acamposm\\MacVendorLookup\\Providers\\MacVendorLookupServiceProvider"
             ],
             "aliases": {
                 "MacVendorLookup": "Acamposm\\MacVendorLookup\\Facades\\MacVendorLookupFacade"
