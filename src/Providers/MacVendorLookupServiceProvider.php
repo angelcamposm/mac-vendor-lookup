@@ -34,7 +34,7 @@ class MacVendorLookupServiceProvider extends ServiceProvider
     }
 
     /**
-     * Automatically apply the package configuration
+     * Automatically apply the package configuration.
      */
     private function mergeConfig()
     {
