@@ -6,31 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class OuiAssignment extends Model
 {
-
     protected $table = 'ieee_oui_assignments';
 
     /**
-     * Return the block size of the registry
+     * Return the block size of the registry.
      *
      * @return array
      */
     public function blockSize(): array
     {
-        switch($this->registry) {
-            case "MA-L":
+        switch ($this->registry) {
+            case 'MA-L':
                 return [
                     'assignment' => '2^24',
-                    'total' => number_format(16777216, 0),
+                    'total'      => number_format(16777216, 0),
                 ];
-            case "MA-M":
+            case 'MA-M':
                 return [
                     'assignment' => '2^20',
-                    'total' => number_format(1048576, 0),
+                    'total'      => number_format(1048576, 0),
                 ];
             case 'MA-S':
                 return [
                     'assignment' => '2^12',
-                    'total' => number_format(4096, 0),
+                    'total'      => number_format(4096, 0),
                 ];
             default:
                 return [];
@@ -42,13 +41,15 @@ class OuiAssignment extends Model
         $lower = '';
         $upper = '';
 
-        switch($this->registry) {
-            case "MA-L":
+        switch ($this->registry) {
+            case 'MA-L':
                 $lower = $this->oui.'000000';
                 $upper = $this->oui.'FFFFFF';
-            case "MA-M":
+                // no break
+            case 'MA-M':
                 $lower = $this->oui.'000000';
                 $upper = $this->oui.'FFFFFF';
+                // no break
             case 'MA-S':
                 $lower = $this->oui.'000000';
                 $upper = $this->oui.'FFFFFF';
@@ -61,18 +62,18 @@ class OuiAssignment extends Model
     }
 
     /**
-     * Returns a formated MAC Address
+     * Returns a formated MAC Address.
      *
      * @param string $input
      * @param string $separator
+     *
      * @return string
      */
     private function formatMacAddress(string $input, string $separator = ':'): string
     {
         $mac = '';
 
-        foreach(str_split($input, 2) as $octet) {
-
+        foreach (str_split($input, 2) as $octet) {
             if (strlen($mac) === 0) {
                 $mac = $octet;
             }
@@ -84,7 +85,7 @@ class OuiAssignment extends Model
     }
 
     /**
-     * Returns if the OUI Assigment is a private assigment
+     * Returns if the OUI Assigment is a private assigment.
      *
      * @return bool
      */
@@ -94,7 +95,7 @@ class OuiAssignment extends Model
     }
 
     /**
-     * Verifies if is a Virtual Machine based on Vendor OUI
+     * Verifies if is a Virtual Machine based on Vendor OUI.
      *
      * @return bool
      */
@@ -121,7 +122,7 @@ class OuiAssignment extends Model
     }
 
     /**
-     * Return the administration type of the MAC Address
+     * Return the administration type of the MAC Address.
      *
      * @return string[]
      */
@@ -132,11 +133,11 @@ class OuiAssignment extends Model
         $bin = sprintf('%04d', decbin(hexdec($first_octet)));
 
         return substr($bin, 0, 1) == 0 ? [
-            'type' => 'UAA',
+            'type'        => 'UAA',
             'description' => 'Universally Administered Address',
         ] : [
-            'type' => 'LAA',
-            'description' => 'Locally Administered Address'
+            'type'        => 'LAA',
+            'description' => 'Locally Administered Address',
         ];
     }
 
@@ -151,7 +152,7 @@ class OuiAssignment extends Model
     }
 
     /**
-     * Return if the byte is set to Individual or Group
+     * Return if the byte is set to Individual or Group.
      *
      * @return string
      */
@@ -163,7 +164,7 @@ class OuiAssignment extends Model
     }
 
     /**
-     * Verifies if the MAC Address is a Multicast MAC Address
+     * Verifies if the MAC Address is a Multicast MAC Address.
      *
      * @return bool
      */
@@ -173,7 +174,8 @@ class OuiAssignment extends Model
     }
 
     /**
-     * Verifies if the MAC Address is a Unicast MAC Address
+     * Verifies if the MAC Address is a Unicast MAC Address.
+     *
      * @return bool
      */
     public function isUnicast(): bool
@@ -181,4 +183,3 @@ class OuiAssignment extends Model
         return in_array(substr($this->oui, 1, 1), ['2', '6', 'A', 'E']);
     }
 }
-

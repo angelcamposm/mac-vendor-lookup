@@ -88,7 +88,7 @@ class GetMacAddressDetails extends Command
     }
 
     /**
-     * Draws the Vendor Details Table
+     * Draws the Vendor Details Table.
      *
      * @param OuiAssignment $assignment
      */
@@ -109,12 +109,12 @@ class GetMacAddressDetails extends Command
                 Str::title($assignment->organization),
                 $assignment->address,
                 $assignment->isPrivate() ? 'true' : 'false',
-            ]
+            ],
         ]);
     }
 
     /**
-     * Draws the Assigment Block Details Table
+     * Draws the Assigment Block Details Table.
      *
      * @param OuiAssignment $assignment
      */
@@ -137,12 +137,12 @@ class GetMacAddressDetails extends Command
                 ($assignment->ranges())->lower,
                 ($assignment->ranges())->upper,
                 $assignment->updated_at ?? 'Unknown',
-            ]
+            ],
         ]);
     }
 
     /**
-     * Draws the Mac Address Details Table
+     * Draws the Mac Address Details Table.
      *
      * @param OuiAssignment $assignment
      */
@@ -167,25 +167,27 @@ class GetMacAddressDetails extends Command
                 $assignment->isMulticast() ? 'true' : 'false',
                 $assignment->isUnicast() ? 'true' : 'false',
                 filter_var($this->argument('mac'), FILTER_VALIDATE_MAC) != false ? 'true' : 'false',
-            ]
+            ],
         ]);
     }
 
     /**
-     * Returns the OIU for this MAC Address
+     * Returns the OIU for this MAC Address.
      *
      * @param string $mac_address
+     *
      * @return string
      */
     private function getOUI(string $mac_address): string
     {
-        return substr(str_replace(['.',':','-'], '', $mac_address), 0, 6);
+        return substr(str_replace(['.', ':', '-'], '', $mac_address), 0, 6);
     }
 
     /**
-     * Returns the Vendor associated with this OUI
+     * Returns the Vendor associated with this OUI.
      *
      * @param string $oui
+     *
      * @return array
      */
     private function getMacAddressDetails(string $oui)

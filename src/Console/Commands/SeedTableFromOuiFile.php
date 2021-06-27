@@ -39,8 +39,9 @@ class SeedTableFromOuiFile extends Command
     /**
      * Execute the console command.
      *
-     * @return int
      * @throws OuiFileNotFoundException
+     *
+     * @return int
      */
     public function handle()
     {
@@ -55,7 +56,7 @@ class SeedTableFromOuiFile extends Command
     }
 
     /**
-     * Process the recently downloaded oui.csv
+     * Process the recently downloaded oui.csv.
      *
      * @return array
      */
@@ -77,7 +78,7 @@ class SeedTableFromOuiFile extends Command
     }
 
     /**
-     * Seed the table ieee_oui_vendors
+     * Seed the table ieee_oui_vendors.
      *
      * @param array $csv
      */
@@ -90,7 +91,6 @@ class SeedTableFromOuiFile extends Command
         $this->output->progressStart($chunks->count());
 
         foreach ($chunks as $chunk) {
-
             DB::table('ieee_oui_assignments')->insert($chunk->toArray());
 
             $this->output->progressAdvance();

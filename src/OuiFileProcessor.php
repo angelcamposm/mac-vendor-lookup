@@ -11,9 +11,10 @@ class OuiFileProcessor
     protected array $csv;
 
     /**
-     * Load the specified file into an array
+     * Load the specified file into an array.
      *
      * @param string $path
+     *
      * @return $this
      */
     public function load(string $path): OuiFileProcessor
@@ -35,9 +36,10 @@ class OuiFileProcessor
     }
 
     /**
-     * Process the array, removes headers and add custom ones
+     * Process the array, removes headers and add custom ones.
      *
      * @param array $csv
+     *
      * @return array
      */
     private function process(array $csv): array
