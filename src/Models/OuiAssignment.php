@@ -4,6 +4,16 @@ namespace Acamposm\MacVendorLookup\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class OuiAssignment
+ *
+ * @package Acamposm\MacVendorLookup\Models
+ *
+ * @property  string  $oui
+ * @property  string  $organization
+ * @property  string  $address
+ * @property  string  $registry
+ */
 class OuiAssignment extends Model
 {
     protected $table = 'ieee_oui_assignments';
@@ -15,50 +25,44 @@ class OuiAssignment extends Model
      */
     public function blockSize(): array
     {
-        switch ($this->registry) {
-            case 'MA-L':
-                return [
-                    'assignment' => '2^24',
-                    'total'      => number_format(16777216, 0),
-                ];
-            case 'MA-M':
-                return [
-                    'assignment' => '2^20',
-                    'total'      => number_format(1048576, 0),
-                ];
-            case 'MA-S':
-                return [
-                    'assignment' => '2^12',
-                    'total'      => number_format(4096, 0),
-                ];
-            default:
-                return [];
-        }
+        return match ($this->registry) {
+            'MA-L' => [
+                'assignment' => '2^24',
+                'total' => number_format(16777216, 0),
+            ],
+            'MA-M' => [
+                'assignment' => '2^20',
+                'total' => number_format(1048576, 0),
+            ],
+            'MA-S' => [
+                'assignment' => '2^12',
+                'total' => number_format(4096, 0),
+            ],
+            default => [],
+        };
     }
 
+    /**
+     * Return the ranges.
+     *
+     * @return object
+     */
     public function ranges()
     {
-        $lower = '';
-        $upper = '';
-
-        switch ($this->registry) {
-            case 'MA-L':
-                $lower = $this->oui.'000000';
-                $upper = $this->oui.'FFFFFF';
-                // no break
-            case 'MA-M':
-                $lower = $this->oui.'000000';
-                $upper = $this->oui.'FFFFFF';
-                // no break
-            case 'MA-S':
-                $lower = $this->oui.'000000';
-                $upper = $this->oui.'FFFFFF';
-        }
-
-        return (object) [
-            'lower' => self::formatMacAddress($lower),
-            'upper' => self::formatMacAddress($upper),
-        ];
+        return match ($this->registry) {
+            'MA-L' => (object) [
+                'lower' => self::formatMacAddress($this->oui.'000000'),
+                'upper' => self::formatMacAddress($this->oui.'FFFFFF'),
+            ],
+            'MA-M' => (object) [
+                'lower' => self::formatMacAddress($this->oui.'000000'),
+                'upper' => self::formatMacAddress($this->oui.'FFFFFF'),
+            ],
+            'MA-S' => (object) [
+                'lower' => self::formatMacAddress($this->oui.'000000'),
+                'upper' => self::formatMacAddress($this->oui.'FFFFFF'),
+            ],
+        };
     }
 
     /**
@@ -71,17 +75,7 @@ class OuiAssignment extends Model
      */
     private function formatMacAddress(string $input, string $separator = ':'): string
     {
-        $mac = '';
-
-        foreach (str_split($input, 2) as $octet) {
-            if (strlen($mac) === 0) {
-                $mac = $octet;
-            }
-
-            $mac .= $separator.$octet;
-        }
-
-        return $mac;
+        return implode($separator, str_split($input, 2));
     }
 
     /**

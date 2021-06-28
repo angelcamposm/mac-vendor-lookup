@@ -7,7 +7,7 @@ use Acamposm\MacVendorLookup\Models\OuiAssignment;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
-class GetMacAddressDetails extends Command
+class GetMacAddressDetailsCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -161,7 +161,7 @@ class GetMacAddressDetails extends Command
         ], [
             [
                 $this->argument('mac'),
-                ($assignment->administrationBype())['type'].' ('.($assignment->administrationBype())['description'].')',
+                ($assignment->administrationByte())['type'].' ('.($assignment->administrationByte())['description'].')',
                 $assignment->groupByte(),
                 $assignment->isVirtualMachine() ? 'true' : 'false',
                 $assignment->isMulticast() ? 'true' : 'false',
@@ -190,7 +190,7 @@ class GetMacAddressDetails extends Command
      *
      * @return array
      */
-    private function getMacAddressDetails(string $oui)
+    private function getMacAddressDetails(string $oui): OuiAssignment
     {
         return OuiAssignment::where('oui', '=', $oui)->first();
     }

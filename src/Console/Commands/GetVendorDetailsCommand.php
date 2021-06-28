@@ -8,7 +8,7 @@ use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
-class FindVendorFromMacAddress extends Command
+class GetVendorDetailsCommand extends Command
 {
     /**
      * The name and signature of the console command.

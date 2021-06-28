@@ -3,7 +3,8 @@
 namespace Acamposm\MacVendorLookup\Providers;
 
 use Acamposm\MacVendorLookup\Console\Commands\DownloadOuiFileFromIeeeWebPage;
-use Acamposm\MacVendorLookup\Console\Commands\GetMacAddressDetails;
+use Acamposm\MacVendorLookup\Console\Commands\GetVendorDetailsCommand;
+use Acamposm\MacVendorLookup\Console\Commands\GetMacAddressDetailsCommand;
 use Acamposm\MacVendorLookup\Console\Commands\InstallPackageCommand;
 use Acamposm\MacVendorLookup\Console\Commands\SeedTableFromOuiFile;
 use Illuminate\Support\ServiceProvider;
@@ -76,18 +77,30 @@ class MacVendorLookupServiceProvider extends ServiceProvider
                 InstallPackageCommand::class,
             ]);
         }
+
         $this->commands([
             DownloadOuiFileFromIeeeWebPage::class,
-            GetMacAddressDetails::class,
+            GetMacAddressDetailsCommand::class,
+            GetVendorDetailsCommand::class,
             SeedTableFromOuiFile::class,
         ]);
     }
 
+    /**
+     * Returns the config file path.
+     *
+     * @return string
+     */
     private function getConfigPath(): string
     {
         return __DIR__.'/../../config/ieee.php';
     }
 
+    /**
+     * Returns the migration path.
+     *
+     * @return string
+     */
     private function getMigrationsPath(): string
     {
         return __DIR__.'/../../database/migrations/';
