@@ -5,14 +5,13 @@ namespace Acamposm\MacVendorLookup\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class OuiAssignment
+ * Class OuiAssignment.
  *
- * @package Acamposm\MacVendorLookup\Models
  *
- * @property  string  $oui
- * @property  string  $organization
- * @property  string  $address
- * @property  string  $registry
+ * @property string $oui
+ * @property string $organization
+ * @property string $address
+ * @property string $registry
  */
 class OuiAssignment extends Model
 {
@@ -28,15 +27,15 @@ class OuiAssignment extends Model
         return match ($this->registry) {
             'MA-L' => [
                 'assignment' => '2^24',
-                'total' => number_format(16777216, 0),
+                'total'      => number_format(16777216, 0),
             ],
             'MA-M' => [
                 'assignment' => '2^20',
-                'total' => number_format(1048576, 0),
+                'total'      => number_format(1048576, 0),
             ],
             'MA-S' => [
                 'assignment' => '2^12',
-                'total' => number_format(4096, 0),
+                'total'      => number_format(4096, 0),
             ],
             default => [],
         };
