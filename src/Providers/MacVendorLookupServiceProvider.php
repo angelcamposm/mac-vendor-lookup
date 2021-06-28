@@ -3,8 +3,8 @@
 namespace Acamposm\MacVendorLookup\Providers;
 
 use Acamposm\MacVendorLookup\Console\Commands\DownloadOuiFileFromIeeeWebPage;
-use Acamposm\MacVendorLookup\Console\Commands\GetVendorDetailsCommand;
 use Acamposm\MacVendorLookup\Console\Commands\GetMacAddressDetailsCommand;
+use Acamposm\MacVendorLookup\Console\Commands\GetVendorDetailsCommand;
 use Acamposm\MacVendorLookup\Console\Commands\InstallPackageCommand;
 use Acamposm\MacVendorLookup\Console\Commands\SeedTableFromOuiFile;
 use Illuminate\Support\ServiceProvider;
