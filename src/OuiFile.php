@@ -92,7 +92,7 @@ class OuiFile
      */
     public function getFileName(string $name): string
     {
-        return match($name) {
+        return match ($name) {
             OuiType::CID => 'oui_cid_'.$this->date().'.csv',
             OuiType::IAB => 'oui_iab_'.$this->date().'.csv',
             OuiType::MAL => 'oui_mal_'.$this->date().'.csv',
@@ -166,7 +166,7 @@ class OuiFile
      */
     public function fullPath(): string
     {
-        return 'app/'. $this->path();
+        return 'app/'.$this->path();
     }
 
     /**
