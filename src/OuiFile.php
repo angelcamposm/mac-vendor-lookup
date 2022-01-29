@@ -67,7 +67,7 @@ class OuiFile
     public function exists(): bool
     {
         if (!Storage::exists($this->path())) {
-            throw new OuiFileNotFoundException('File '. $this->name().' not found.');
+            throw new OuiFileNotFoundException('File '.$this->name().' not found.');
         }
 
         return Storage::exists($this->path());
@@ -93,11 +93,11 @@ class OuiFile
     public function getFileName(string $name): string
     {
         return match($name) {
-            OuiType::CID => 'oui_cid_'. $this->date().'.csv',
-            OuiType::IAB => 'oui_iab_'. $this->date().'.csv',
-            OuiType::MAL => 'oui_mal_'. $this->date().'.csv',
-            OuiType::MAM => 'oui_mam_'. $this->date().'.csv',
-            OuiType::MAS => 'oui_mas_'. $this->date().'.csv',
+            OuiType::CID => 'oui_cid_'.$this->date().'.csv',
+            OuiType::IAB => 'oui_iab_'.$this->date().'.csv',
+            OuiType::MAL => 'oui_mal_'.$this->date().'.csv',
+            OuiType::MAM => 'oui_mam_'.$this->date().'.csv',
+            OuiType::MAS => 'oui_mas_'.$this->date().'.csv',
         };
     }
 
@@ -118,7 +118,7 @@ class OuiFile
      */
     public function path(): string
     {
-        return self::FOLDER.'/'. $this->name();
+        return self::FOLDER.'/'.$this->name();
     }
 
     /**
