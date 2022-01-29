@@ -19,7 +19,7 @@ class OuiFileProcessor
      */
     public function load(string $path): OuiFileProcessor
     {
-        $this->csv = self::process(array_map('str_getcsv', file(storage_path($path))));
+        $this->csv = $this->process(array_map('str_getcsv', file(storage_path($path))));
         $this->file = $path;
 
         return $this;
