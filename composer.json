@@ -30,7 +30,10 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
@@ -45,7 +48,7 @@
     "minimum-stability": "stable",
     "scripts": {
         "pest": "./vendor/bin/pest --coverage",
-        "test": "phpunit --colors=always --testdox",
+        "test": "./vendor/bin/pest --colors=always --testdox",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
     }
 }
