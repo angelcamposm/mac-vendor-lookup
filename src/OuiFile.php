@@ -2,6 +2,7 @@
 
 namespace Acamposm\MacVendorLookup;
 
+use Acamposm\MacVendorLookup\Enums\OuiType;
 use Acamposm\MacVendorLookup\Exceptions\OuiFileNotFoundException;
 use Exception;
 use Illuminate\Filesystem\Filesystem;
@@ -11,21 +12,6 @@ use Illuminate\Support\Facades\Storage;
 class OuiFile
 {
     public const FOLDER = 'ieee';
-
-    public const CID = 'IEEE CID Assignments';
-    public const IAB = 'IEEE IAB Assignments';
-    public const MAL = 'IEEE MA-L Assignments';
-    public const MAM = 'IEEE MA-M Assignments';
-    public const MAS = 'IEEE MA-S Assignments';
-
-    public const NAMES = [
-        OuiFile::CID,
-        OuiFile::IAB,
-        OuiFile::MAL,
-        OuiFile::MAM,
-        OuiFile::MAS,
-    ];
-
     protected bool $manualAssignment = false;
     protected string $file;
     protected string $name;
@@ -41,18 +27,18 @@ class OuiFile
     public function __construct(?string $name = null, bool $isManualAssignment = false)
     {
         if (is_null($name)) {
-            throw new Exception('A file type or name is required');
+            throw new \RuntimeException('A file type or name is required');
         }
 
-        if (!in_array($name, OuiFile::NAMES) && $isManualAssignment == false) {
-            throw new Exception('For custom name, $isManualAssigment must be true.');
+        if ((false === $isManualAssignment) && !in_array($name, OuiType::NAMES)) {
+            throw new \RuntimeException('For custom name, $isManualAssigment must be true.');
         }
 
         if ($isManualAssignment) {
             $this->file = $name;
             $this->manualAssignment = true;
         } else {
-            $this->file = self::getFileName($name);
+            $this->file = $this->getFileName($name);
             $this->name = $name;
         }
     }
@@ -66,9 +52,9 @@ class OuiFile
     {
         if ($this->manualAssignment) {
             return Carbon::createFromFormat('Ymd', substr($this->file, 8, 8))->toDateString();
-        } else {
-            return Carbon::now()->format('Ymd');
         }
+
+        return Carbon::now()->format('Ymd');
     }
 
     /**
@@ -80,11 +66,11 @@ class OuiFile
      */
     public function exists(): bool
     {
-        if (!Storage::exists(self::path())) {
-            throw new OuiFileNotFoundException('File '.self::name().' not found.');
+        if (!Storage::exists($this->path())) {
+            throw new OuiFileNotFoundException('File '. $this->name().' not found.');
         }
 
-        return Storage::exists(self::path());
+        return Storage::exists($this->path());
     }
 
     /**
@@ -94,7 +80,7 @@ class OuiFile
      */
     public function hash(): string
     {
-        return (new Filesystem())->hash(storage_path(self::fullPath()));
+        return (new Filesystem())->hash(storage_path($this->fullPath()));
     }
 
     /**
@@ -106,20 +92,13 @@ class OuiFile
      */
     public function getFileName(string $name): string
     {
-        switch ($name) {
-            case OuiFile::MAL:
-                return 'oui_mal_'.self::date().'.csv';
-            case OuiFile::MAM:
-                return 'oui_mam_'.self::date().'.csv';
-            case OuiFile::MAS:
-                return 'oui_mas_'.self::date().'.csv';
-            case OuiFile::IAB:
-                return 'oui_iab_'.self::date().'.csv';
-            case OuiFile::CID:
-                return 'oui_cid_'.self::date().'.csv';
-            default:
-                return '';
-        }
+        return match($name) {
+            OuiType::CID => 'oui_cid_'. $this->date().'.csv',
+            OuiType::IAB => 'oui_iab_'. $this->date().'.csv',
+            OuiType::MAL => 'oui_mal_'. $this->date().'.csv',
+            OuiType::MAM => 'oui_mam_'. $this->date().'.csv',
+            OuiType::MAS => 'oui_mas_'. $this->date().'.csv',
+        };
     }
 
     /**
@@ -139,7 +118,7 @@ class OuiFile
      */
     public function path(): string
     {
-        return self::FOLDER.'/'.self::name();
+        return self::FOLDER.'/'. $this->name();
     }
 
     /**
@@ -150,23 +129,16 @@ class OuiFile
     public function registry(): string
     {
         if (!isset($this->name)) {
-            return self::getRegistryFromFileName($this->file);
+            return $this->getRegistryFromFileName($this->file);
         }
 
-        switch ($this->name) {
-            case OuiFile::MAL:
-                return 'MA-L';
-            case OuiFile::MAM:
-                return 'MA-M';
-            case OuiFile::MAS:
-                return 'MA-S';
-            case OuiFile::IAB:
-                return 'IAB';
-            case OuiFile::CID:
-                return 'CID';
-            default:
-                return '';
-        }
+        return match ($this->name) {
+            OuiType::CID => 'CID',
+            OuiType::IAB => 'IAB',
+            OuiType::MAL => 'MA-L',
+            OuiType::MAM => 'MA-M',
+            OuiType::MAS => 'MA-S',
+        };
     }
 
     /**
@@ -178,18 +150,13 @@ class OuiFile
      */
     private function getRegistryFromFileName(string $name): string
     {
-        switch (substr($name, 4, 3)) {
-            case 'cid':
-                return 'CID';
-            case 'iab':
-                return 'IAB';
-            case 'mal':
-                return 'MA-L';
-            case 'mam':
-                return 'MA-M';
-            case 'mas':
-                return 'MA-S';
-        }
+        return match (substr($name, 4, 3)) {
+            'cid' => 'CID',
+            'iab' => 'IAB',
+            'mal' => 'MA-L',
+            'mam' => 'MA-M',
+            'mas' => 'MA-S',
+        };
     }
 
     /**
@@ -199,7 +166,7 @@ class OuiFile
      */
     public function fullPath(): string
     {
-        return 'app/'.self::path();
+        return 'app/'. $this->path();
     }
 
     /**
@@ -209,7 +176,7 @@ class OuiFile
      */
     public function size(): int
     {
-        return Storage::size(self::path());
+        return Storage::size($this->path());
     }
 
     /**
@@ -219,19 +186,12 @@ class OuiFile
      */
     public function url(): string
     {
-        switch ($this->name) {
-            case OuiFile::MAL:
-                return config('ieee.oui.url.mal');
-            case OuiFile::MAM:
-                return config('ieee.oui.url.mam');
-            case OuiFile::MAS:
-                return config('ieee.oui.url.mas');
-            case OuiFile::IAB:
-                return config('ieee.oui.url.iab');
-            case OuiFile::CID:
-                return config('ieee.oui.url.cid');
-            default:
-                return '';
-        }
+        return match ($this->name) {
+            OuiType::CID => config('ieee.oui.url.cid'),
+            OuiType::IAB => config('ieee.oui.url.iab'),
+            OuiType::MAL => config('ieee.oui.url.mal'),
+            OuiType::MAM => config('ieee.oui.url.mam'),
+            OuiType::MAS => config('ieee.oui.url.mas'),
+        };
     }
 }
